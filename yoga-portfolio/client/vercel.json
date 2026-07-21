@@ -1,12 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://yoga-portfolio.onrender.com/api/$1"
+      "source": "/api/:match*",
+      "destination": "https://yoga-portfolio.onrender.com/api/:match*"
     },
     {
-      "source": "/uploads/(.*)",
-      "destination": "https://yoga-portfolio.onrender.com/uploads/$1"
+      "source": "/uploads/:match*",
+      "destination": "https://yoga-portfolio.onrender.com/uploads/:match*"
     },
     {
       "source": "/(.*)",
