@@ -157,11 +157,9 @@ export default function YogaCanvas() {
   const containerRef = useRef(null)
   const canvasRef = useRef(null)
   const [activePoseKey, setActivePoseKey] = useState('tadasana')
-  const [isRotating, setIsRotating] = useState(true)
   const [loading, setLoading] = useState(true)
 
   const activePoseKeyRef = useRef(activePoseKey)
-  const isRotatingRef = useRef(isRotating)
   const currentPositionsRef = useRef(null)
 
   if (!currentPositionsRef.current) {
@@ -173,10 +171,6 @@ export default function YogaCanvas() {
   }, [activePoseKey])
 
   useEffect(() => {
-    isRotatingRef.current = isRotating
-  }, [isRotating])
-
-  useEffect(() => {
     setLoading(false)
     const canvas = canvasRef.current
     if (!canvas) return
@@ -184,8 +178,47 @@ export default function YogaCanvas() {
     if (!ctx) return
 
     let animationFrameId
-    let rotationAngle = 0
+    let rotationAngleY = 0
+    let rotationAngleX = 0
     let lastTime = performance.now()
+
+    let isDragging = false
+    let previousMousePosition = { x: 0, y: 0 }
+
+    const handleMouseDown = (e) => {
+      isDragging = true
+      previousMousePosition = { x: e.clientX, y: e.clientY }
+    }
+    const handleMouseMove = (e) => {
+      if (!isDragging) return
+      const deltaX = e.clientX - previousMousePosition.x
+      const deltaY = e.clientY - previousMousePosition.y
+      rotationAngleY += deltaX * 0.01
+      rotationAngleX += deltaY * 0.01
+      previousMousePosition = { x: e.clientX, y: e.clientY }
+    }
+    const handleMouseUp = () => {
+      isDragging = false
+    }
+    const handleTouchStart = (e) => {
+      isDragging = true
+      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    }
+    const handleTouchMove = (e) => {
+      if (!isDragging) return
+      const deltaX = e.touches[0].clientX - previousMousePosition.x
+      const deltaY = e.touches[0].clientY - previousMousePosition.y
+      rotationAngleY += deltaX * 0.01
+      rotationAngleX += deltaY * 0.01
+      previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    }
+
+    canvas.addEventListener('mousedown', handleMouseDown)
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseup', handleMouseUp)
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: true })
+    window.addEventListener('touchmove', handleTouchMove, { passive: true })
+    window.addEventListener('touchend', handleMouseUp)
 
     // Handle high DPI screens
     const resizeCanvas = () => {
@@ -226,10 +259,7 @@ export default function YogaCanvas() {
         curr.z += (dest.z - curr.z) * lerpSpeed
       }
 
-      // 3. Compute rotation angle
-      if (isRotatingRef.current) {
-        rotationAngle += deltaTime * 0.25 // slow spin speed
-      }
+      // 3. Manual rotation handled by event listeners
 
       // 4. Set up center and scale
       const centerX = width / 2
@@ -272,31 +302,30 @@ export default function YogaCanvas() {
       drawMandalaRings()
 
       // 6. Project 3D coordinates to 2D
-      const breath = Math.sin(time * 0.0015) * 0.015
       const projected = {}
 
       for (const name in currentPositionsRef.current) {
         const p = currentPositionsRef.current[name]
 
-        // Add subtle breathing movement to the upper body
-        let yOffset = 0
-        if (name === 'head') yOffset = breath * 1.5
-        else if (name === 'neck') yOffset = breath * 1.2
-        else if (name === 'chest') yOffset = breath
+        const y = p.y
 
-        const y = p.y + yOffset
+        // Apply rotation around the X-axis (up/down)
+        const cosX = Math.cos(rotationAngleX)
+        const sinX = Math.sin(rotationAngleX)
+        const rotY1 = y * cosX - p.z * sinX
+        const rotZ1 = y * sinX + p.z * cosX
 
-        // Apply rotation around the Y-axis (spinning)
-        const cos = Math.cos(rotationAngle)
-        const sin = Math.sin(rotationAngle)
-        const rotatedX = p.x * cos - p.z * sin
-        const rotatedZ = p.x * sin + p.z * cos
+        // Apply rotation around the Y-axis (left/right)
+        const cosY = Math.cos(rotationAngleY)
+        const sinY = Math.sin(rotationAngleY)
+        const rotX2 = p.x * cosY - rotZ1 * sinY
+        const rotZ2 = p.x * sinY + rotZ1 * cosY
 
         // 2D projection
         projected[name] = {
-          x: centerX + rotatedX * scale,
-          y: centerY - y * scale,
-          z: rotatedZ
+          x: centerX + rotX2 * scale,
+          y: centerY - rotY1 * scale,
+          z: rotZ2
         }
       }
 
@@ -427,6 +456,14 @@ export default function YogaCanvas() {
     return () => {
       window.removeEventListener('resize', resizeCanvas)
       window.cancelAnimationFrame(animationFrameId)
+      if (canvas) {
+        canvas.removeEventListener('mousedown', handleMouseDown)
+        canvas.removeEventListener('touchstart', handleTouchStart)
+      }
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseup', handleMouseUp)
+      window.removeEventListener('touchmove', handleTouchMove)
+      window.removeEventListener('touchend', handleMouseUp)
     }
   }, [])
 
@@ -434,11 +471,11 @@ export default function YogaCanvas() {
     <div className={styles.canvasContainer} ref={containerRef}>
       {loading && <div className={styles.loading}>Connecting Canvas...</div>}
 
-      <canvas ref={canvasRef} className={styles.canvas} />
+      <canvas ref={canvasRef} className={styles.canvas} style={{ touchAction: 'none', cursor: 'grab' }} />
 
       {/* Hero Quote Overlay Integrated Perfectly */}
       <div className={styles.heroQuoteOverlay}>
-        <p>"My motive is to help my student meet himself — honestly and fully."</p>
+        <p>"My motive is to help my student meet himself - honestly and fully."</p>
         <div className={styles.quoteLine} />
         <span className={styles.quoteAttr}>Hritik Gorane</span>
       </div>
@@ -461,15 +498,6 @@ export default function YogaCanvas() {
             {POSES[poseKey].name}
           </button>
         ))}
-
-        {/* Rotation Toggle */}
-        <button
-          className={`${styles.btn} ${isRotating ? styles.btnActive : ''} ${styles.btnRotate}`}
-          onClick={() => setIsRotating(!isRotating)}
-          title="Toggle Auto Rotation"
-        >
-          {isRotating ? '⏸ Orbit' : '▶ Spin'}
-        </button>
       </div>
     </div>
   )
