@@ -1,0 +1,117 @@
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 24px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.4s;
+}
+.nav.scrolled {
+  background: rgba(250,248,244,0.95);
+  backdrop-filter: blur(12px);
+  padding: 16px 60px;
+  box-shadow: 0 1px 0 rgba(44,74,53,0.08);
+}
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  color: var(--deep-green);
+  font-weight: 400;
+}
+.links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+.links a {
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.3s;
+}
+.links a:hover { color: var(--deep-green); }
+
+/* Hamburger Toggle button styles */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 110;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bar {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background-color: var(--deep-green);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Transform hamburger into an 'X' when open */
+.hamburgerActive .bar:nth-child(1) {
+  transform: translateY(7.5px) rotate(45deg);
+}
+
+.hamburgerActive .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburgerActive .bar:nth-child(3) {
+  transform: translateY(-7.5px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .nav, .nav.scrolled { 
+    padding: 20px 24px; 
+  }
+  
+  .hamburger {
+    display: flex;
+  }
+  
+  .links {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(250, 248, 244, 0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 105;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    margin: 0;
+    padding: 0;
+  }
+  
+  .linksOpen {
+    transform: translateX(0);
+  }
+  
+  .links a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    letter-spacing: 0.1em;
+    text-transform: none;
+    color: var(--deep-green);
+  }
+
+  .links a:hover {
+    color: var(--accent);
+  }
+}

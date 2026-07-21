@@ -1,0 +1,96 @@
+.page {
+  min-height: 100vh;
+  background: var(--deep-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.card {
+  background: var(--warm-white);
+  padding: 56px 48px;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+.symbol {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem;
+  color: var(--sage);
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--deep-green);
+}
+.sub {
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.divider {
+  width: 40px; height: 1px;
+  background: var(--earth);
+  margin: 24px auto;
+}
+.field {
+  text-align: left;
+  margin-bottom: 20px;
+}
+.label {
+  display: block;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--deep-green);
+  margin-bottom: 6px;
+}
+.input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid rgba(44, 74, 53, 0.15);
+  background: transparent;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.9rem;
+  color: var(--deep-green);
+  outline: none;
+  transition: all 0.3s;
+}
+.input:focus {
+  border-color: var(--sage);
+  background: rgba(245, 240, 232, 0.5);
+}
+.loginBtn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: var(--deep-green);
+  color: var(--warm-white);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+.loginBtn:hover {
+  background: var(--sage);
+  color: white;
+}
+.loginBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.error {
+  color: #c94b4b;
+  font-size: 0.8rem;
+  margin-bottom: 16px;
+  text-align: left;
+}
