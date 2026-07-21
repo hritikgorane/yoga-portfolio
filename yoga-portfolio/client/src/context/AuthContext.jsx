@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
     }
 
     try {
-      const res = await fetch('/api/auth/me', {
+      const res = await fetch('https://yoga-portfolio.onrender.com/api/auth/me', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -40,7 +40,7 @@ export function AuthProvider({ children }) {
   }, [])
 
   const signIn = async (username, password) => {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch('https://yoga-portfolio.onrender.com/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

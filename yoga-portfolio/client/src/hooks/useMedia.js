@@ -7,7 +7,7 @@ export function useMedia() {
   const fetchMedia = async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/media')
+      const res = await fetch('https://yoga-portfolio.onrender.com/api/media')
       if (res.ok) {
         const data = await res.json()
         setMedia(data)
@@ -32,7 +32,7 @@ export function useMedia() {
     formData.append('title', metadata.title || '')
     formData.append('caption', metadata.caption || '')
 
-    const res = await fetch('/api/media/upload', {
+    const res = await fetch('https://yoga-portfolio.onrender.com/api/media/upload', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -52,7 +52,7 @@ export function useMedia() {
 
   const updateMedia = async (id, updates) => {
     const token = localStorage.getItem('yoga_portfolio_token')
-    const res = await fetch(`/api/media/${id}`, {
+    const res = await fetch(`https://yoga-portfolio.onrender.com/api/media/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export function useMedia() {
 
   const deleteMedia = async (id) => {
     const token = localStorage.getItem('yoga_portfolio_token')
-    const res = await fetch(`/api/media/${id}`, {
+    const res = await fetch(`https://yoga-portfolio.onrender.com/api/media/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -92,7 +92,7 @@ export function useMedia() {
 
     try {
       const token = localStorage.getItem('yoga_portfolio_token')
-      const res = await fetch('/api/media/reorder', {
+      const res = await fetch('https://yoga-portfolio.onrender.com/api/media/reorder', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

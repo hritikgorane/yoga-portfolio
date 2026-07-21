@@ -39,7 +39,7 @@ export default function Home() {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const res = await fetch('/api/content')
+        const res = await fetch('https://yoga-portfolio.onrender.com/api/content')
         if (res.ok) {
           const data = await res.json()
           if (data.site) setContent(data.site)

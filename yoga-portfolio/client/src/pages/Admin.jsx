@@ -40,7 +40,7 @@ export default function Admin() {
   const loadMessages = async () => {
     const token = localStorage.getItem('yoga_portfolio_token')
     try {
-      const res = await fetch('/api/contacts', {
+      const res = await fetch('https://yoga-portfolio.onrender.com/api/contacts', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -60,7 +60,7 @@ export default function Admin() {
   const loadSiteContent = async () => {
     setContentLoading(true)
     try {
-      const res = await fetch('/api/content')
+      const res = await fetch('https://yoga-portfolio.onrender.com/api/content')
       if (res.ok) {
         const data = await res.json()
         if (data.site) setSiteForm(data.site)
@@ -116,7 +116,7 @@ export default function Admin() {
   const deleteMsg = async (id) => {
     const token = localStorage.getItem('yoga_portfolio_token')
     try {
-      const res = await fetch(`/api/contacts/${id}`, {
+      const res = await fetch(`https://yoga-portfolio.onrender.com/api/contacts/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -161,7 +161,7 @@ export default function Admin() {
     
     const token = localStorage.getItem('yoga_portfolio_token')
     try {
-      const res = await fetch('/api/content', {
+      const res = await fetch('https://yoga-portfolio.onrender.com/api/content', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
