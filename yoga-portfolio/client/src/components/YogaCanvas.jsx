@@ -263,8 +263,9 @@ export default function YogaCanvas() {
 
       // 4. Set up center and scale
       const centerX = width / 2
-      const centerY = height / 2 - 20
-      const scale = Math.min(width, height) * 0.45
+      const isMobile = width < 900
+      const centerY = height / 2 - (isMobile ? 70 : 20)
+      const scale = Math.min(width, height) * (isMobile ? 0.38 : 0.45)
 
       // 5. Draw concentric rotating mandala floor rings (ellipses in perspective)
       // Ground center corresponds to y = -0.6

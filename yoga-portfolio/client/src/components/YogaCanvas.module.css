@@ -78,7 +78,7 @@
 /* POSE DETAIL PANEL (Glassmorphism) */
 .infoPanel {
   position: absolute;
-  top: 200px;
+  top: 180px;
   left: 30px;
   width: 280px;
   background: rgba(250, 248, 244, 0.45);
@@ -201,12 +201,12 @@
 /* RESPONSIVE DESIGN */
 @media (max-width: 900px) {
   .canvasContainer {
-    min-height: 480px;
+    min-height: 650px; /* Increased to give yoga figure more room */
   }
   .infoPanel {
     position: absolute;
     top: auto;
-    bottom: 84px;
+    bottom: 74px; /* Lower now that controls are 1 line */
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
@@ -243,10 +243,21 @@
   }
   .controls {
     bottom: 12px;
-    padding: 4px 6px;
+    padding: 6px 12px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    width: 90%;
+    scrollbar-width: none; /* Firefox */
+  }
+  .controls::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
   }
   .btn {
-    padding: 6px 10px;
-    font-size: 0.62rem;
+    padding: 6px 12px;
+    font-size: 0.65rem;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 }
